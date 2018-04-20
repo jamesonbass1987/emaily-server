@@ -1,3 +1,4 @@
 export {
-    fetchUser
+    fetchUser,
+    handleToken
 } from './auth';

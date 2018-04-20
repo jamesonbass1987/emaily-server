@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { fetchUser } from "../store/actions/index";
+import * as dispatchActions from "../store/actions/index";
 
 import Header from './Header';
 import Landing from './Landing';
@@ -34,9 +33,5 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({ fetchUser }, dispatch)
-);
 
-
-export default connect(null, mapDispatchToProps)(App);
+export default connect(null, dispatchActions)(App);

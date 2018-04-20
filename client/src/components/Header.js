@@ -2,37 +2,43 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Payments from './Payments';
+
 // import { bindActionCreators } from "redux";
 
 class Header extends Component {
     
-    renderContent() {
+    renderLinks() {
         switch (this.props.currentUser) {
             case null:
                 return;
             case false:
-                return <a href="/auth/google">Login With Google</a>;
+                return <li><a href="/auth/google">Login With Google</a></li>;
             default:
-                return <a href="/api/logout">Logout</a>;
+                return [<li key="1">
+                            <Payments>Add Token</Payments>
+                        </li>,
+                        <li key="2">
+                            <a href="/api/logout">Logout</a>
+                        </li>
+                        ]
         }   
     }
     
     render(){
 
-        const logoLinkRoute = this.props.currentUser ? 
-                                    '/surveys' :
-                                    '/';
-
         return <nav>
             <div className="nav-wrapper">
                 <Link 
-                    to={logoLinkRoute} 
+                    to={this.props.currentUser ? 
+                                    '/surveys' :
+                                    '/'} 
                     className="left brand-logo"
                 >
                     Emaily
                 </Link>
                 <ul className="right">
-                    <li>{this.renderContent()}</li>
+                    {this.renderLinks()}
                 </ul>
             </div>
           </nav>;
