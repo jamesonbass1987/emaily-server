@@ -1,28 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Header from './Header'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { fetchUser } from "../store/actions/index";
+
+import Header from './Header';
+import Landing from './Landing';
 
 const Dashboard = () => <h2>Dashboard</h2>
 
 const SurveyNew = () => <h2>SurveyNew</h2>
+class App extends Component {
 
-const Landing = () => <h2>Landing</h2>
+  componentDidMount(){
+    this.props.fetchUser();
+  }
 
-const App = () => {
+  render(){
+      return (
+        <div>
+          <BrowserRouter>
+            <div className="container">
+              <Header />
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/surveys" component={Dashboard} />
+                <Route path="/surveys/new" component={SurveyNew} />
+              </Switch>
+            </div>
+          </BrowserRouter>
+        </div>
+      );
+  }
+}
 
-    return <div>
-        <BrowserRouter>
-          <div className="container">
-            <Header />
-            <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/surveys" component={Dashboard} />
-              <Route path="/surveys/new" component={SurveyNew} />
-              <Route path="/header" component={Header} />
-            </Switch>
-          </div>
-        </BrowserRouter>
-      </div>;
-};
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({ fetchUser }, dispatch)
+);
 
-export default App;
+
+export default connect(null, mapDispatchToProps)(App);
