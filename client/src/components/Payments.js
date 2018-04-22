@@ -7,8 +7,6 @@ class Payments extends Component {
 
     render() {
 
-        debugger;
-
         return (
             <StripeCheckout
                 token={token => this.props.handleToken(token)}

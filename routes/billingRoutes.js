@@ -1,19 +1,23 @@
-const   express     = require("express"),
-        router      = express.Router(),
-        passport    = require("passport"),
-        keys        = require('../config/keys'),
-        stripe      = require("stripe")(keys.stripeSecretKey);
+const   keys        = require('../config/keys'),
+        stripe      = require("stripe")(keys.stripeSecretKey),
+        requireLogin  = require('../middlewares/requireLogin');
 
-router.post('/stripe', (req, res) => {
 
-    console.log(req.body);
-    // stripe.charges.create({
-    //     amount: 5000,
-    //     currency: "usd",
-    //     source: "",
-    //     description: "Charge for emaily.com credits."
-    // })
+module.exports = app => {
 
-})
+    app.post("/api/billing/stripe", requireLogin, async (req, res) => {
 
-module.exports = router;
+        const charge = await stripe.charges.create({
+            amount: 5000,
+            currency: "usd",
+            source: req.body.id,
+            description: "Charge for emaily.com credits."
+        });
+
+        req.user.credits += 5;
+        const user = await req.user.save();
+        res.send(user);
+    });
+
+}
+
