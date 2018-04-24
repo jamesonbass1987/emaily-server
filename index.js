@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const billingRoutes = require("./routes/billingRoutes");
 
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
@@ -31,6 +32,7 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 if (process.env.NODE_ENV === 'production'){
     // Express will serve production assets on heroku
@@ -39,7 +41,6 @@ if (process.env.NODE_ENV === 'production'){
 
     // Express will serve index.html file if it doesn't
     // recognize the route
-    console.log('production environment', process.env.NODE_ENV)
     const path = require('path');
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
